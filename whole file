@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070817">
+  <title>Aether Clash: Rift Arena</title>
+  <style>
+    :root {
+      --ink: #eef1ff;
+      --muted: #afb6db;
+      --deep: #070817;
+      --panel: rgba(20, 23, 59, .78);
+      --line: rgba(183, 194, 255, .2);
+      --cyan: #62edff;
+      --violet: #a589ff;
+      --pink: #fa73c7;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--deep);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 15% 8%, rgba(111, 91, 255, .36), transparent 28rem),
+        radial-gradient(circle at 82% 20%, rgba(27, 210, 255, .22), transparent 25rem),
+        linear-gradient(145deg, #070817 0%, #10113a 48%, #070817 100%);
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: .25;
+      background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 25px 0; }
+    .brand { font-weight: 950; letter-spacing: .1em; font-size: .9rem; }
+    .brand span { color: var(--cyan); }
+    .nav-links { display: flex; gap: 20px; color: var(--muted); font-size: .92rem; }
+    .nav-links a:hover { color: white; }
+    .hero { min-height: 660px; display: grid; grid-template-columns: 1.08fr .92fr; align-items: center; gap: 40px; padding: 70px 0 95px; }
+    .eyebrow { color: var(--cyan); font-size: .75rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 12px 0 18px; max-width: 760px; font-size: clamp(3rem, 7vw, 6.5rem); line-height: .88; letter-spacing: -.075em; }
+    h1 em { color: transparent; font-style: normal; background: linear-gradient(100deg, var(--cyan), #c0b0ff 48%, var(--pink)); background-clip: text; }
+    .lead { max-width: 570px; color: var(--muted); font-size: 1.08rem; line-height: 1.7; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .button { border: 1px solid var(--line); border-radius: 99px; padding: 13px 20px; font-weight: 800; font-size: .93rem; transition: transform .18s, background .18s; cursor: pointer; }
+    .button:hover { transform: translateY(-3px); }
+    .button.primary { color: #08101b; border-color: transparent; background: linear-gradient(100deg, var(--cyan), #c7a7ff); }
+    .button.ghost { background: rgba(255,255,255,.04); }
+    .hero-art { position: relative; min-height: 470px; }
+    .orbit { position: absolute; inset: 10% 0 0 8%; border: 1px solid rgba(140, 167, 255, .28); border-radius: 50%; transform: rotate(-22deg); }
+    .orb { position: absolute; width: 125px; height: 125px; right: 5%; top: 8%; border-radius: 50%; background: radial-gradient(circle at 35% 30%, white, var(--cyan) 18%, #6359d8 48%, transparent 70%); filter: drop-shadow(0 0 35px #57e8ff); animation: float 5s ease-in-out infinite; }
+    .fighter { position: absolute; inset: 8% 8% 0 13%; border: 1px solid rgba(208, 213, 255, .26); border-radius: 38px 38px 130px 38px; overflow: hidden; background: linear-gradient(145deg, rgba(28, 26, 78, .95), rgba(12, 16, 43, .75)); box-shadow: 0 28px 80px rgba(0,0,0,.38); }
+    .fighter::before { content: ""; position: absolute; width: 330px; height: 330px; bottom: -100px; left: -80px; border-radius: 50%; background: #d75bb7; filter: blur(20px); opacity: .78; }
+    .fighter::after { content: ""; position: absolute; width: 330px; height: 400px; right: -25px; bottom: -30px; border-radius: 48% 48% 12% 12%; background: linear-gradient(135deg, #96ecff 2%, #3b51bc 44%, #151443 45%); transform: rotate(12deg); clip-path: polygon(30% 0, 54% 12%, 76% 0, 73% 28%, 93% 49%, 69% 51%, 88% 100%, 22% 100%, 28% 61%, 3% 56%, 28% 37%); filter: drop-shadow(-18px 7px 14px rgba(0,0,0,.25)); }
+    .fighter-name { position: absolute; z-index: 1; left: 28px; bottom: 28px; font-size: 2.1rem; font-weight: 950; letter-spacing: -.06em; }
+    .fighter-name small { display: block; margin-bottom: 5px; color: var(--cyan); font-size: .66rem; letter-spacing: .17em; }
+    .section { padding: 95px 0; }
+    .section-kicker { color: var(--cyan); font-size: .75rem; letter-spacing: .14em; font-weight: 800; text-transform: uppercase; }
+    h2 { margin: 10px 0 16px; font-size: clamp(2.1rem, 4.5vw, 4rem); line-height: .98; letter-spacing: -.06em; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 25px; margin-bottom: 30px; }
+    .section-head p { max-width: 430px; color: var(--muted); line-height: 1.6; }
+    .modes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .mode { min-height: 260px; position: relative; overflow: hidden; padding: 30px; border: 1px solid var(--line); border-radius: 26px; background: var(--panel); transition: transform .2s, border-color .2s; }
+    .mode { width: 100%; min-height: 260px; position: relative; overflow: hidden; padding: 30px; border: 1px solid var(--line); border-radius: 26px; color: inherit; text-align: left; font: inherit; background: var(--panel); transition: transform .2s, border-color .2s; cursor: pointer; }
+    .mode:hover { transform: translateY(-5px); border-color: rgba(138, 239, 255, .8); }
+    .mode .number { color: var(--cyan); font-size: .76rem; font-weight: 900; letter-spacing: .12em; }
+    .mode h3 { margin: 36px 0 10px; font-size: 1.75rem; letter-spacing: -.045em; }
+    .mode p { max-width: 330px; color: var(--muted); line-height: 1.55; }
+    .mode-action { position: relative; display: inline-block; margin-top: 8px; color: var(--cyan); font-size: .83rem; font-weight: 850; }
+    .mode .symbol { position: absolute; right: -15px; bottom: -35px; color: rgba(177, 218, 255, .13); font-size: 12rem; line-height: 1; font-weight: 900; }
+    .roster { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .card { min-height: 280px; position: relative; overflow: hidden; padding: 18px; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(160deg, var(--tone), rgba(11, 13, 40, .92) 59%); cursor: pointer; transition: transform .2s, border-color .2s; }
+    .card:hover, .card.active { transform: translateY(-5px); border-color: rgba(255,255,255,.7); }
+    .card .initial { position: absolute; right: -6px; bottom: -42px; color: rgba(255,255,255,.13); font-size: 13rem; font-weight: 950; line-height: 1; }
+    .card small { color: rgba(255,255,255,.72); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; }
+    .card h3 { position: relative; margin: 9px 0 5px; font-size: 1.48rem; letter-spacing: -.05em; }
+    .card p { position: relative; margin: 0; color: rgba(255,255,255,.78); font-size: .86rem; line-height: 1.45; }
+    .profile { display: grid; grid-template-columns: .8fr 1.2fr; gap: 24px; align-items: stretch; margin-top: 20px; padding: 25px; border: 1px solid var(--line); border-radius: 24px; background: rgba(8,10,33,.72); }
+    .profile-visual { min-height: 160px; display: grid; place-items: center; border-radius: 18px; background: radial-gradient(circle, var(--profile), transparent 64%), #10133b; font-size: 5.5rem; font-weight: 950; }
+    .profile h3 { margin: 0 0 6px; font-size: 1.75rem; letter-spacing: -.05em; }
+    .profile p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+    .stat { padding: 10px; border-left: 2px solid var(--profile); background: rgba(255,255,255,.035); }
+    .stat span { display: block; color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+    .stat strong { display: block; margin-top: 3px; font-size: .95rem; }
+    .cta { margin: 30px 0 0; padding: 54px 30px; border: 1px solid rgba(129, 232, 255, .3); border-radius: 30px; text-align: center; background: radial-gradient(circle at center, rgba(92, 209, 255, .14), transparent 53%), rgba(18, 18, 61, .62); }
+    .cta h2 { max-width: 650px; margin-inline: auto; }
+    .cta p { max-width: 570px; margin: 0 auto 24px; color: var(--muted); line-height: 1.6; }
+    footer { padding: 34px 0 45px; color: #8f97bb; font-size: .82rem; text-align: center; }
+    dialog { width: min(520px, calc(100% - 32px)); color: var(--ink); border: 1px solid rgba(155, 232, 255, .4); border-radius: 25px; padding: 0; background: #10133c; box-shadow: 0 25px 90px rgba(0,0,0,.7); }
+    dialog::backdrop { background: rgba(2, 3, 15, .72); backdrop-filter: blur(7px); }
+    .dialog-inner { padding: 31px; }
+    .dialog-inner h3 { margin: 8px 0 10px; font-size: 2rem; letter-spacing: -.05em; }
+    .dialog-inner p { color: var(--muted); line-height: 1.6; }
+    .dialog-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 23px; }
+    @keyframes float { 50% { transform: translateY(-16px); } }
+    @media (max-width: 790px) {
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 45px; }
+      .hero-art { min-height: 370px; }
+      .section-head, .profile { grid-template-columns: 1fr; display: grid; }
+      .modes, .roster { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 490px) {
+      .container { width: min(100% - 28px, 1120px); }
+      .modes, .roster { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .hero-art { min-height: 310px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <nav>
+      <a class="brand" href="#top">AETHER <span>CLASH</span></a>
+      <div class="nav-links"><a href="#modi">Modi</a><a href="#kaempfer">Kämpfer</a><a href="#steam">Steam</a></div>
+    </nav>
+
+    <section class="hero" id="top">
+      <div>
+        <div class="eyebrow">Originales Anime-Arena-Kampfspiel</div>
+        <h1>Wähle deine <em>Energie.</em><br>Brich die Arena.</h1>
+        <p class="lead">Aether Clash: Rift Arena ist ein schnelles 1-gegen-1-Kampfspiel mit spektakulären Energietechniken, Luftbewegung und einem Kader ganz eigener Helden.</p>
+        <div class="actions"><a class="button primary" href="#kaempfer">Kämpfer entdecken</a><a class="button ghost" href="#modi">Spielmodi ansehen</a></div>
+      </div>
+      <div class="hero-art" aria-label="Stilisierte Darstellung eines originalen Energie-Kämpfers">
+        <div class="orbit"></div><div class="orb"></div>
+        <div class="fighter"><div class="fighter-name"><small>HÜTERIN DES RIFTS</small>LYRA NOVA</div></div>
+      </div>
+    </section>
+
+    <section class="section" id="modi">
+      <div class="section-head"><div><div class="section-kicker">Dein Weg in die Arena</div><h2>Zwei Modi.<br>Ein Ziel: Meisterschaft.</h2></div><p>Trainiere im eigenen Tempo oder miss dich mit Spielern aus aller Welt. Beide Modi nutzen denselben starken Kern aus Timing, Beweglichkeit und Energie-Management.</p></div>
+      <div class="modes">
+        <article class="mode"><div class="number">01 / SOLO</div><h3>Computer-Modus</h3><p>Wähle Schwierigkeitsgrad, übe Combos im Training oder kämpfe dich durch die Rift-Liga gegen immer stärkere KI-Gegner.</p><div class="symbol">CPU</div></article>
+        <article class="mode"><div class="number">02 / VERSUS</div><h3>Online-Modus</h3><p>Fordere Freunde in privaten Räumen heraus oder steige in Ranglisten-Duellen auf. Klare Regeln, direkte Revanche und faire Matches.</p><div class="symbol">VS</div></article>
+        <a class="mode" href="aether-clash-arena.html?mode=cpu"><div class="number">01 / SOLO</div><h3>Computer-Modus</h3><p>Wähle Schwierigkeitsgrad, übe Combos im Training oder kämpfe dich durch die Rift-Liga gegen immer stärkere KI-Gegner.</p><span class="mode-action">CPU-Kampf starten →</span><div class="symbol">CPU</div></a>
+        <button class="mode" id="onlineMode" type="button"><div class="number">02 / VERSUS</div><h3>Online-Modus</h3><p>Fordere Freunde in privaten Räumen heraus oder steige in Ranglisten-Duellen auf. Klare Regeln, direkte Revanche und faire Matches.</p><span class="mode-action">Lobby öffnen →</span><div class="symbol">VS</div></button>
+      </div>
+    </section>
+
+    <section class="section" id="kaempfer">
+      <div class="section-head"><div><div class="section-kicker">Start-Roster</div><h2>Vier Kämpfer.<br>Vier Spielstile.</h2></div><p>Alle Figuren, Namen und Fähigkeiten sind neu entwickelt – damit dein Spiel eine eigene Welt und eine klare Identität bekommt.</p></div>
+      <div class="roster" role="list">
+        <button class="card active" style="--tone:#1e6589" data-name="Lyra Nova" data-role="Ausgeglichen & einsteigerfreundlich" data-text="Lyra formt prismatische Energie zu schnellen Fernangriffen und kurzen Schutzfeldern. Sie ist der perfekte erste Charakter für neue Spieler." data-speed="Mittel" data-power="Mittel" data-skill="Prisma-Schub" data-color="#62edff" data-letter="L" role="listitem"><small>Prisma-Hüterin</small><h3>Lyra Nova</h3><p>Kontrolle · Energie</p><div class="initial">L</div></button>
+        <button class="card" style="--tone:#57246d" data-name="Vex Arashi" data-role="Extrem schnell & riskant" data-text="Vex verschwindet in elektrischen Kurzsprüngen und bestraft langsame Gegner mit Luft-Combos. Stark für Spieler, die gern offensiv spielen." data-speed="Sehr hoch" data-power="Niedrig" data-skill="Blitz-Sprung" data-color="#fa73c7" data-letter="V" role="listitem"><small>Sturm-Läufer</small><h3>Vex Arashi</h3><p>Tempo · Combos</p><div class="initial">V</div></button>
+        <button class="card" style="--tone:#744326" data-name="Korr Ashen" data-role="Kraftvoll & standhaft" data-text="Korr zieht Asche-Energie in seine Arme und bricht gegnerische Deckung mit schweren Treffern. Weniger Tempo, aber enorme Durchschlagskraft." data-speed="Niedrig" data-power="Sehr hoch" data-skill="Asche-Brecher" data-color="#ffb35e" data-letter="K" role="listitem"><small>Asche-Koloss</small><h3>Korr Ashen</h3><p>Power · Deckungsbruch</p><div class="initial">K</div></button>
+        <button class="card" style="--tone:#2d397a" data-name="Sera Vale" data-role="Taktisch & präzise" data-text="Sera setzt Echo-Siegel auf das Spielfeld. Wer ihre Positionen liest, kontrolliert Raum und Tempo – ideal für kreative Taktiker." data-speed="Hoch" data-power="Mittel" data-skill="Echo-Siegel" data-color="#a589ff" data-letter="S" role="listitem"><small>Rift-Strategin</small><h3>Sera Vale</h3><p>Fallen · Kontrolle</p><div class="initial">S</div></button>
+      </div>
+      <div class="profile" id="profile" style="--profile:#62edff"><div class="profile-visual" id="profileLetter">L</div><div><h3 id="profileName">Lyra Nova</h3><p><strong id="profileRole">Ausgeglichen & einsteigerfreundlich</strong><br><span id="profileText">Lyra formt prismatische Energie zu schnellen Fernangriffen und kurzen Schutzfeldern. Sie ist der perfekte erste Charakter für neue Spieler.</span></p><div class="stats"><div class="stat"><span>Tempo</span><strong id="speed">Mittel</strong></div><div class="stat"><span>Stärke</span><strong id="power">Mittel</strong></div><div class="stat"><span>Signaturtechnik</span><strong id="skill">Prisma-Schub</strong></div></div></div></div>
+    </section>
+
+    <section class="cta" id="steam"><div class="section-kicker">Dein erster Schritt Richtung Steam</div><h2>Eine Welt, die ganz dir gehört.</h2><p>Diese Seite setzt den Ton: eigene Figuren, eigene Namen und ein klarer Kampfspiel-Kern. Als Nächstes können wir die Story, Arenen oder das Kampfsystem genauer festlegen.</p><a class="button primary" href="#kaempfer">Start-Roster auswählen</a></section>
+  </main>
+  <dialog id="onlineLobby" aria-labelledby="lobbyTitle">
+    <div class="dialog-inner">
+      <div class="section-kicker">Rift-Lobby</div>
+      <h3 id="lobbyTitle">Online wird vorbereitet.</h3>
+      <p>Eine echte Online-Lobby braucht einen Server für Konten, Matchmaking und Verbindungen. Bis der steht, kannst du den Zwei-Spieler-Modus direkt an einem Computer testen.</p>
+      <div class="dialog-actions"><a class="button primary" href="aether-clash-arena.html?mode=versus">Lokales Duell starten</a><button class="button ghost" type="button" id="closeLobby">Schließen</button></div>
+    </div>
+  </dialog>
+  <footer>© 2026 Aether Clash: Rift Arena · Konzeptseite · Kein offizielles Dragon-Ball-Produkt.</footer>
+  <script>
+    const cards = document.querySelectorAll('.card');
+    const profile = document.getElementById('profile');
+    const values = { name: 'profileName', role: 'profileRole', text: 'profileText', speed: 'speed', power: 'power', skill: 'skill' };
+    cards.forEach(card => card.addEventListener('click', () => {
+      cards.forEach(item => item.classList.remove('active'));
+      card.classList.add('active');
+      Object.entries(values).forEach(([key, id]) => document.getElementById(id).textContent = card.dataset[key]);
+      document.getElementById('profileLetter').textContent = card.dataset.letter;
+      profile.style.setProperty('--profile', card.dataset.color);
+    }));
+    const lobby = document.getElementById('onlineLobby');
+    document.getElementById('onlineMode').addEventListener('click', () => lobby.showModal());
+    document.getElementById('closeLobby').addEventListener('click', () => lobby.close());
+  </script>
+</body>
+</html>
